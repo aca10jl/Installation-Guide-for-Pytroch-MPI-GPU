@@ -36,13 +36,7 @@ sudo chgrp $USER -R /home/$USER/anaconda3/
 sudo chown $USER -R /home/$USER/anaconda3/
 
 
-# Prepare environment and depencences for Pytorch
-export CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
-conda install numpy pyyaml mkl mkl-include setuptools cmake cffi typing
-conda install -c pytorch magma-cuda92 # or [magma-cuda80 | magma-cuda91] depending on your cuda version
-
-
-## Install an alternative old version of gcc and g++
+## Install an alternative version of gcc and g++
 sudo apt install gcc-6 g++-6 -y
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 10
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 10
@@ -53,8 +47,22 @@ sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
 
-# Compile Pytorch from official source on Github for 
+# Prepare environment and depencences for Pytorch
+export CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
+conda install numpy pyyaml mkl mkl-include setuptools cmake cffi typing
+conda install -c pytorch magma-cuda92 # or [magma-cuda80 | magma-cuda91] depending on your cuda version
+
+
+# Compile Pytorch from official source on Github
 cd
 git clone --recursive https://github.com/pytorch/pytorch
 cd pytorch
 python setup.py install
+
+
+# Compile Torchvision from official source on Github
+git clone https://github.com/pytorch/vision.git
+cd vision
+python setup.py install
+
+
