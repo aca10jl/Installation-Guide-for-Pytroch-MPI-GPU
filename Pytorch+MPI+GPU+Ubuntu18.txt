@@ -16,6 +16,14 @@ cd openmpi-4.0.0
 ./configure --with-cuda=/usr/local/cuda-9.2/include --prefix=/usr/local/openmpi
 make -j$(($(nproc) + 1))
 sudo make install
+
+
+# Config openmpi running environment
+nano ~/.bashrc
+echo 'export OPENMPI=/usr/local/openmpi' >> ~/.bashrc
+echo 'export PATH=$OPENMPI/bin:$PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=$OPENMPI/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
+source ~/.bashrc
 ompi_info
 
 
