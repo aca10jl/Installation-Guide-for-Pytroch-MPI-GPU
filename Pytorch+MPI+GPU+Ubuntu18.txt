@@ -23,7 +23,7 @@ nano ~/.bashrc
 echo 'export OPENMPI=/usr/local/openmpi' >> ~/.bashrc
 echo 'export PATH=$OPENMPI/bin:$PATH' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=$OPENMPI/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
-source ~/.bashrc
+source ~/.bashrc # or [sudo reboot]
 ompi_info
 
 
@@ -31,15 +31,15 @@ ompi_info
 wget https://repo.anaconda.com/archive/Anaconda3-5.3.1-Linux-x86_64.sh
 chmod o+x Anaconda3-5.3.1-Linux-x86_64.sh
 sudo ./Anaconda3-5.3.1-Linux-x86_64.sh
+source ~/.bashrc # or [sudo reboot]
 sudo chgrp $USER -R /home/$USER/anaconda3/
 sudo chown $USER -R /home/$USER/anaconda3/
-sudo chmod $USER -R +x /home/$USER/anaconda3/
 
 
 # Prepare environment and depencences for Pytorch
 export CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
 conda install numpy pyyaml mkl mkl-include setuptools cmake cffi typing
-conda install -c pytorch magma-cuda92
+conda install -c pytorch magma-cuda92 # or [magma-cuda80 | magma-cuda91] depending on your cuda version
 
 
 # Compile Pytorch from official source on Github for 
