@@ -42,6 +42,16 @@ conda install numpy pyyaml mkl mkl-include setuptools cmake cffi typing
 conda install -c pytorch magma-cuda92 # or [magma-cuda80 | magma-cuda91] depending on your cuda version
 
 
+## Install an alternative old version of gcc and g++
+sudo apt install gcc-6 g++-6 -y
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 10
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 10
+
+# Config the default version of gcc and g++ to be gcc-6 and g++-6
+sudo update-alternatives --config gcc
+sudo update-alternatives --config g++
+
+
 # Compile Pytorch from official source on Github for 
 cd
 git clone --recursive https://github.com/pytorch/pytorch
