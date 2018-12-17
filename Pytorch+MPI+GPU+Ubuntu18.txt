@@ -1,0 +1,42 @@
+# Uninstall pytorch & openmpi
+sudo apt remove --auto-remove openmpi-bin openmpi-common libopenmpi-dev
+sudo apt purge --auto-remove openmpi-bin openmpi-common libopenmpi-dev
+sudo pip uninstall torch
+sudo pip3 uninstall torch
+sudo pip uninstall torchvision
+sudo pip3 uninstall torchvision
+sudo rm -rf /usr/local/lib/python2.7/dist-packages/torc*
+sudo rm -rf /usr/local/lib/python3.6/dist-packages/torc*
+
+
+# Download the latest openmpi, config it to be "cuda-aware", and install it
+wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.0.tar.gz
+tar -xzvf openmpi-4.0.0.tar.gz
+cd openmpi-4.0.0
+./configure --with-cuda=/usr/local/cuda-9.2/include --prefix=/usr/local/openmpi
+make -j$(($(nproc) + 1))
+sudo make install
+ompi_info
+
+
+# Download and install Anaconda
+wget https://repo.anaconda.com/archive/Anaconda3-5.3.1-Linux-x86_64.sh
+chmod o+x Anaconda3-5.3.1-Linux-x86_64.sh
+sudo ./Anaconda3-5.3.1-Linux-x86_64.sh
+
+sudo chgrp $USER -R /home/$USER/anaconda3/
+sudo chown $USER -R /home/$USER/anaconda3/
+sudo chmod $USER -R +x /home/$USER/anaconda3/
+
+
+# Prepare environment and depencences for Pytorch
+export CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
+conda install numpy pyyaml mkl mkl-include setuptools cmake cffi typing
+conda install -c pytorch magma-cuda92
+
+
+# Compile Pytorch from official source on Github for 
+cd
+git clone --recursive https://github.com/pytorch/pytorch
+cd pytorch
+python setup.py install
