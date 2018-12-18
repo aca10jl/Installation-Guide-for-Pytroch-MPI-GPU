@@ -36,13 +36,13 @@ sudo chgrp $USER -R /home/$USER/anaconda3/
 sudo chown $USER -R /home/$USER/anaconda3/
 
 
-## Install an alternative version of gcc and g++
+# [Optional] Install an alternative version of gcc and g++
 sudo apt install gcc-6 g++-6 -y
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 10
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 10
 
 
-# Config the default version of gcc and g++ to be gcc-6 and g++-6
+# [Optional] Config the default version of gcc and g++ to be gcc-6 and g++-6
 sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
