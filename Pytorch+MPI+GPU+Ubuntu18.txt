@@ -19,7 +19,6 @@ sudo make install
 
 
 # Config openmpi running environment
-nano ~/.bashrc
 echo 'export OPENMPI=/usr/local/openmpi' >> ~/.bashrc
 echo 'export PATH=$OPENMPI/bin:$PATH' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=$OPENMPI/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
