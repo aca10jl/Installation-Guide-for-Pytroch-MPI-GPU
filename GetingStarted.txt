@@ -1,0 +1,51 @@
+## As the python file that is going to be executed should be located at the same directory on all workers
+# To simplify the settings, we can create a new user account with the name of e.g. "mpi" on each worker
+adduser mpi
+
+## Log onto "master" node and create an ssh key pair for MPI backend
+ssh master@{master's ip}
+ssh-keygen -t rsa
+
+## Enable ssh connection from master to worker nodes without passphrase
+ssh-copy-id mpi@{each worker's ip}
+pkill ssh-agent
+eval `ssh-agent`
+ssh-add ~/.ssh/id_rsa
+
+
+## Common issues (these are all the problems I was suffered from xD)
+# 1. Execution is terminated due to cannot locate the file that is supposed to be run.
+# Place all the files into a directory that can be accessed with the same path.
+# For example, leave the files at /home/mpi/
+mpirun -np 4 /home/mpi/TorchMPI.py
+
+# 2. OpenMPI environment variables are already set on each node, but still indicated that the configurations are not correctly
+# Solution: 
+# The flag "--prefix /usr/local/openmpi" should always be added when using the command "mpirun", even though you have correctly configured all the environment variables (PATH and LD_LIBRARY_PATH) for OpenMPI.
+# i.e.
+mpirun --prefix /usr/local/openmpi -np 4 /home/mpi/TorchMPI.py
+
+# 3. Username on each node are not exectly same
+# Solution:
+# Setup a text hostfile on master machine to figure it out, since the flag "-host user1@node1,user2@node2" cannot work properly.
+# An example hostfile, where the file name is "nodes":
+user1@{node1's ip} slots=4 max-slots=4
+user2@{node2's ip} slots=4 max-slots=4
+mpirun --prefix /usr/local/openmpi --hostfile /home/master/nodes -np 4 /home/mpi/TorchMPI.py
+
+# 4. Cannot find python for cannot find the Torch/Vision/Pytorch that we just compiled with Anaconda's Python
+# Solution:
+# It dues to the locations of Anaconda's Python is varied on each node. To solve it, you may need to uninstall Anaconda and remove Pytorch completely and then reinstall them to a common location such as "/etc/opt". 
+rm -rf ~/anaconda3 # if Anaconda was installed here
+rm -rf ~/.conda
+rm -rf ~/pytorch # if Pytorch was installed here
+rm -rf ~/vision # if Vision was installed here
+# To install ANaconda and compile Pytorch, please refer to my tutorial (https://github.com/aca10jl/Installation-Guide-for-Pytroch-MPI-GPU/blob/master/Pytorch+MPI+GPU+Ubuntu18.txt)
+
+# 5. Communication issue between nodes not due to some reasons
+# Solution:
+# Manually define the "root ip" address for the communication destination.
+# Firstly, take a look at your networks and find out the "root ip"
+netstat -nr
+# In my case, the nodes are on 10.10.10.5, 10.10.10.6, 10.10.10.7, etc., where the "root ip" should be 10.10.10.0
+mpirun --prefix /usr/local/openmpi --hostfile /home/master/nodes --mca btl_tcp_if_include 10.10.10.0/24 -np 4 /home/mpi/TorchMPI.py
