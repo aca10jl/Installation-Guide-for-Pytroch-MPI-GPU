@@ -31,8 +31,8 @@ wget https://repo.anaconda.com/archive/Anaconda3-5.3.1-Linux-x86_64.sh
 chmod o+x Anaconda3-5.3.1-Linux-x86_64.sh
 sudo ./Anaconda3-5.3.1-Linux-x86_64.sh
 source ~/.bashrc # or [sudo reboot]
-sudo chgrp $USER -R /home/$USER/anaconda3/
-sudo chown $USER -R /home/$USER/anaconda3/
+sudo chgrp $USER -R /home/$USER/anaconda3/ # for the case that Anaconda is installed at such location
+sudo chown $USER -R /home/$USER/anaconda3/ # for the case that Anaconda is installed at such location
 
 
 # [Optional] Install an alternative version of gcc and g++
