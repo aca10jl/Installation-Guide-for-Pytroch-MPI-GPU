@@ -19,7 +19,7 @@ ssh-add ~/.ssh/id_rsa
 # Place all the files into a directory that can be accessed with the same path.
 # For example, leave the files at /etc/opt/mpi/
 mpirun -np 4 /etc/opt/mpi/TorchMPI.py
-# Besides, Dropbox or alternative tools can be used in Linux to sync files among nodes. If the paths of the syncing folders are not same the nodes, creating a symbolic link from the target folder to the Dropbox folder is a simple way to fix such issue:
+# Besides, Dropbox or alternative tools can be used to sync files among nodes. If the paths of the syncing folders are not same the nodes, creating a symbolic link from the target folder to the Dropbox folder is a simple way to fix such issue if the nodes are running Linux:
 sudo ln -s ~/Dropbox/  **/path/to/another/folder**
 
 # 2. OpenMPI environment variables are already set on each node, but still indicated that the configurations are not correctly
