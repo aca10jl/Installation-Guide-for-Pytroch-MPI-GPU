@@ -14,7 +14,7 @@ ssh-add ~/.ssh/id_rsa
 
 
 ####
-## Common issues (these are all the problems I was suffered from xD)
+## Common issues (these are all the problems we were suffered from xD)
 # 1. Execution is terminated due to cannot locate the file that is supposed to be run.
 # Place all the files into a directory that can be accessed with the same path.
 # For example, if the files are at /etc/opt/mpi/
