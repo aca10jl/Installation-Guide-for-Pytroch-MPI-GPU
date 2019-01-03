@@ -18,7 +18,7 @@ ssh-add ~/.ssh/id_rsa
 # 1. Execution is terminated due to cannot locate the file that is supposed to be run.
 # Place all the files into a directory that can be accessed with the same path.
 # For example, if the files are at /etc/opt/mpi/
-mpirun -np 4 /etc/opt/mpi/TorchMPI.py
+mpirun -np 4 python /etc/opt/mpi/TorchMPI.py
 # Besides, Dropbox or alternative tools can be used to sync files among nodes. If the paths of the syncing folders are not same the nodes, creating a symbolic link from the target folder to the Dropbox folder is a simple way to fix such issue if the nodes are running Linux:
 sudo ln -s ~/Dropbox/ **/path/to/another/folder**
 
@@ -26,7 +26,7 @@ sudo ln -s ~/Dropbox/ **/path/to/another/folder**
 # Solution: 
 # The flag "--prefix /usr/local/openmpi" should always be added when using the command "mpirun", even though you have correctly configured all the environment variables (PATH and LD_LIBRARY_PATH) for OpenMPI.
 # i.e.
-mpirun --prefix /usr/local/openmpi -np 8 /etc/opt/mpi/TorchMPI.py
+mpirun --prefix /usr/local/openmpi -np 8 python/etc/opt/mpi/TorchMPI.py
 
 # 3. Username on each node are not exectly same
 # Solution:
@@ -34,7 +34,7 @@ mpirun --prefix /usr/local/openmpi -np 8 /etc/opt/mpi/TorchMPI.py
 # An example hostfile, where the file name is "nodes":
 user1@{node1's ip} slots=4 max-slots=4
 user2@{node2's ip} slots=4 max-slots=4
-mpirun --prefix /usr/local/openmpi --hostfile /home/master/nodes -np 8 /etc/opt/mpi/TorchMPI.py
+mpirun --prefix /usr/local/openmpi --hostfile /home/master/nodes -np 8 python /etc/opt/mpi/TorchMPI.py
 
 # 4. Cannot find python for cannot find the Torch/Vision/Pytorch that we just compiled with Anaconda's Python
 # Solution:
@@ -44,6 +44,7 @@ rm -rf ~/.conda
 rm -rf ~/pytorch # if Pytorch was installed here
 rm -rf ~/vision # if Vision was installed here
 # To install ANaconda and compile Pytorch, please refer to my tutorial (https://github.com/aca10jl/Installation-Guide-for-Pytroch-MPI-GPU/blob/master/Pytorch+MPI+GPU+Ubuntu18.txt)
+mpirun --prefix /usr/local/openmpi --hostfile /home/master/nodes -np 8 /etc/opt/anaconda3/bin/python /etc/opt/mpi/TorchMPI.py
 
 # 5. Communication issue between nodes not due to some reasons
 # Solution:
@@ -51,4 +52,4 @@ rm -rf ~/vision # if Vision was installed here
 # Firstly, take a look at your networks and find out the "root ip"
 netstat -nr
 # In my case, the nodes are on 10.10.10.5, 10.10.10.6, 10.10.10.7, etc., where the "root ip" should be 10.10.10.0
-mpirun --prefix /usr/local/openmpi --hostfile /home/master/nodes --mca btl_tcp_if_include 10.10.10.0/24 -np 8 /etc/opt/mpi/TorchMPI.py
+mpirun --prefix /usr/local/openmpi --hostfile /home/master/nodes --mca btl_tcp_if_include 10.10.10.0/24 -np 8 /etc/opt/anaconda3/bin/python /etc/opt/mpi/TorchMPI.py
