@@ -26,7 +26,7 @@ sudo ln -s ~/Dropbox/ **/path/to/another/folder**
 # Solution: 
 # The flag "--prefix /usr/local/openmpi" should always be added when using the command "mpirun", even though you have correctly configured all the environment variables (PATH and LD_LIBRARY_PATH) for OpenMPI.
 # i.e.
-mpirun --prefix /usr/local/openmpi -np 8 python/etc/opt/mpi/TorchMPI.py
+mpirun --prefix /usr/local/openmpi -np 8 python /etc/opt/mpi/TorchMPI.py
 
 # 3. Username on each node are not exectly same
 # Solution:
