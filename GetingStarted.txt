@@ -53,3 +53,27 @@ mpirun --prefix /usr/local/openmpi --hostfile /home/master/nodes -np 8 /etc/opt/
 netstat -nr
 # In my case, the nodes are on 10.10.10.5, 10.10.10.6, 10.10.10.7, etc., where the "root ip" should be 10.10.10.0
 mpirun --prefix /usr/local/openmpi --hostfile /home/master/nodes --mca btl_tcp_if_include 10.10.10.0/24 -np 8 /etc/opt/anaconda3/bin/python /etc/opt/mpi/TorchMPI.py
+
+# 6. If you have trouble with execute 'mpirun', it may due to the path of mpirun compiled just now is changed (im my case, it is changed by Anaconda after I installed the package 'mpi4py' by using 'conda install mpi4py').
+# Solution:
+# A simple solutions is that just change the order of environment settings for OpenMPI and Anaconda in '~/.bashrc' -- make OpenMPI's setting in the second order (after Anaconda's one). For example:
+
+# Anaconda3
+__conda_setup="$(CONDA_REPORT_ERRORS=false '/etc/opt/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    \eval "$__conda_setup"
+else
+    if [ -f "/etc/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/etc/opt/anaconda3/etc/profile.d/conda.sh"
+        CONDA_CHANGEPS1=false conda activate base
+    else
+        \export PATH="/etc/opt/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+# OpenMPI
+export OPENMPI=/usr/local/openmpi
+export PATH=$OPENMPI/bin:$PATH
+export LD_LIBRARY_PATH=$OPENMPI/lib:$LD_LIBRARY_PATH
+
