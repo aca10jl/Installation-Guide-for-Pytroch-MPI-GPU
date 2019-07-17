@@ -47,7 +47,7 @@ sudo update-alternatives --config g++
 
 
 # Prepare environment and depencences for Pytorch
-export CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
+export CMAKE_PREFIX_PATH="$(dirname $(which conda))/../" # or： export CMAKE_PREFIX_PATH="~/anaconda3/envs/<NAME>/bin/../"
 conda install numpy pyyaml mkl mkl-include setuptools cmake cffi typing
 conda install -c pytorch magma-cuda92 # or [magma-cuda80 | magma-cuda91] depending on your cuda version
 
@@ -56,6 +56,7 @@ conda install -c pytorch magma-cuda92 # or [magma-cuda80 | magma-cuda91] dependi
 cd
 git clone --recursive https://github.com/pytorch/pytorch
 cd pytorch
+# [optional: define number of procs to use] export MAX_JOBS=32
 python setup.py install
 
 
